@@ -1,0 +1,89 @@
+
+airdrop_address:
+private_key:
+
+fullnode: "grpc.trongrid.io:50051"
+solditynode: "grpc.trongrid.io:50052"
+
+batch: 200
+
+airdrops:
+  trx:
+    type: TRX
+    decimals: 6
+    enable: false
+    audit: "airdrop_TRX.txt"
+    tx_file: 'transaction_TRX.txt'
+    signed_file: 'transactionSigned_TRX.txt'
+
+  btt:
+    type: TRC10
+    decimals: 6
+    assetname: "1002000"
+    enable: false
+    audit: "airdrop_WBTT.txt"
+    tx_file: 'transaction_BTT.txt'
+    signed_file: 'transactionSigned_BTT.txt'
+
+  wink:
+    type: TRC20
+    decimals: 6
+    contract_address: TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7
+    enable: false
+    audit: "airdrop_WIN.txt"
+    tx_file: 'transaction_WIN.txt'
+    signed_file: 'transactionSigned_WIN.txt'
+
+  jst:
+    type: TRC20
+    decimals: 18
+    contract_address: TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9
+    enable: false
+    audit: "airdrop_JST.txt"
+    tx_file: 'transaction_JST.txt'
+    signed_file: 'transactionSigned_JST.txt'
+
+  sun:
+    type: TRC20
+    decimals: 18
+    contract_address: TKkeiboTkxXKJpbmVFbv4a8ov5rAfRDMf9
+    enable: false
+    audit: "airdrop_SUN.txt"
+    tx_file: 'transaction_SUN.txt'
+    signed_file: 'transactionSigned_SUN.txt'
+
+  btcst:
+    type: TRC20
+    decimals: 17
+    contract_address: TFVge5Nb6or8cpdtdwPuXSGqLHpj3PM9Rp
+    enable: false
+    audit: "airdrop_BTCST.txt"
+    tx_file: 'transaction_BTCST.txt'
+    signed_file: 'transactionSigned_BTCST.txt'
+
+  nft:
+    type: TRC20
+    decimals: 6
+    contract_address: TFczxzPhnThNSqr5by8tvxsdCFRRz6cPNq
+    enable: false
+    audit: "airdrop_NFT.txt"
+    tx_file: 'transaction_NFT.txt'
+    signed_file: 'transactionSigned_NFT.txt'
+    blacklist_file: 'blacklist_NFT.txt'
+
+  yfx:
+    type: TRC20
+    decimals: 18
+    contract_address: TAP7qf8Ao26ZAKYS5E6SGozUNoSLvBHsGa
+    enable: false
+    audit: "airdrop_YFX.txt"
+    tx_file: 'transaction_YFX.txt'
+    signed_file: 'transactionSigned_YFX.txt'
+
+
+
+
+
+
+
+
