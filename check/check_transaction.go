@@ -20,7 +20,6 @@ import (
 
 // function to check transaction.
 func TransactionCheck(txSignedFile string) error {
-	log.Logger().Info("Check transaction begin.")
 
 	fileName := fmt.Sprint(txSignedFile)
 	// Read transactionSigned file.
@@ -46,7 +45,6 @@ func TransactionCheck(txSignedFile string) error {
 		// Read line.
 		num, _, c := br.ReadLine()
 		if c == io.EOF {
-			log.Logger().Info("Read line over.")
 			break
 		}
 
@@ -89,33 +87,12 @@ func TransactionCheck(txSignedFile string) error {
 			failed++
 			continue
 		}
-		txraw := &tronCore.TransactionRaw{}
-		txraw = transaction.GetRawData()
-		txcontract := &tronCore.Transaction_Contract{}
-		txcontract = txraw.Contract[0]
-		value := txcontract.Parameter.Value
-
-		trigger := &tronCore.TriggerSmartContract{}
-		err = proto.Unmarshal(value,trigger)
-		if err != nil {
-			   log.Logger().Error("Unmarshal transaction message failed.")
-			   failed++
-			   continue
-		}
-		data := hex.EncodeToString(trigger.Data)
-		to_addr := "41" + data[8:72][24:]
-		hexAddress, err := hex.DecodeString(to_addr)
-		if err != nil {
-			log.Logger().Error("Hex decode string error.")
-			continue
-		}
-
-		base58Address, err := utils.Encode58Check(hexAddress)
-		if err != nil {
-			log.Logger().Error("Base58 encode error.")
-			continue
-		}
-
+		//txraw := &tronCore.TransactionRaw{}
+		//txraw = transaction.GetRawData()
+		//txcontract := &tronCore.Transaction_Contract{}
+		//txcontract = txraw.Contract[0]
+		//value := txcontract.Parameter.Value
+		from := "-"
 
 		transactionHash, err := utils.Hash(raw)
 
@@ -127,17 +104,17 @@ func TransactionCheck(txSignedFile string) error {
 				Value: hash,
 			})
 			if err != nil {
-				log.Logger().Info(fmt.Sprintf("Line [%d], id [%s] receiver [%s] get transaction error, reasons: [%v]", intNum, hex.EncodeToString(transactionHash), base58Address, err))
+				log.Logger().Info(fmt.Sprintf("Line [%d], id [%s] receiver [%s] get transaction error, reasons: [%v]", intNum, hex.EncodeToString(transactionHash), from, err))
 				return
 			}
 
 			if result.GetRet() == nil || len(result.GetRet()) != 1 {
-				log.Logger().Info(fmt.Sprintf("Line [%d], id [%s] receiver [%s] get transaction ret format error.", intNum, hex.EncodeToString(transactionHash), base58Address))
+				log.Logger().Info(fmt.Sprintf("Line [%d], id [%s] receiver [%s] get transaction ret format error.", intNum, hex.EncodeToString(transactionHash), from))
 				return
 			}
 
 			if result.GetRet()[0].GetContractRet().String() != "SUCCESS" {
-				log.Logger().Info(fmt.Sprintf("Line [%d], id [%s] receiver [%s] transaction result is not success, result: [%s].", intNum, hex.EncodeToString(transactionHash), base58Address, result.GetRet()[0].GetContractRet().String()))
+				log.Logger().Info(fmt.Sprintf("Line [%d], id [%s] receiver [%s] transaction result is not success, result: [%s].", intNum, hex.EncodeToString(transactionHash), from, result.GetRet()[0].GetContractRet().String()))
 				return
 			}
 

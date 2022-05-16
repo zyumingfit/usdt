@@ -29,9 +29,9 @@ type UsdtConfig struct {
 	rate            float64
 	airdropAddress  []byte
 	contractAddress []byte
-	precision int64
-	batch 			int
-	assetName []byte
+	precision       int64
+	batch           int
+	assetName       []byte
 }
 
 // Init signed private key by user input.
@@ -94,14 +94,14 @@ func (usdt *UsdtConfig) Init() {
 	f = bufio.NewReader(os.Stdin)
 	precisionString, err := f.ReadString('\n')
 	if err != nil {
-			fmt.Printf("Read string from buffer error, reasons: [%v]\n", err)
-			return
-		}
+		fmt.Printf("Read string from buffer error, reasons: [%v]\n", err)
+		return
+	}
 	usdt.precision, err = strconv.ParseInt(strings.Replace(precisionString, "\n", "", -1), 10, 64)
 	if err != nil {
-			fmt.Printf("Convert precision to int64, reasons: [%v]\n", err)
-			return
-		}
+		fmt.Printf("Convert precision to int64, reasons: [%v]\n", err)
+		return
+	}
 
 	fmt.Println("Please enter rate:")
 	f = bufio.NewReader(os.Stdin)
@@ -159,14 +159,13 @@ func (usdt *UsdtConfig) InitTrc10Airdrop() {
 	fmt.Println("Please enter asset name:")
 	f = bufio.NewReader(os.Stdin)
 	assetName, err := f.ReadString('\n')
-	if err != nil{
+	if err != nil {
 		fmt.Printf("Read string from buffer error, reasons: [%v]\n", err)
 		return
 	}
 	assetName = strings.Replace(assetName, "\n", "", -1)
 	usdt.assetName = []byte(assetName)
 }
-
 
 // Generate account interest file by account snapshot.
 func (usdt *UsdtConfig) GenerateInterestFile() {
@@ -220,7 +219,7 @@ func (usdt *UsdtConfig) GenerateTransactionFile() {
 }
 
 func (usdt *UsdtConfig) GenerateTrxTransactionFile() {
-	if usdt.airdropAddress == nil || len(usdt.airdropAddress) == 0{
+	if usdt.airdropAddress == nil || len(usdt.airdropAddress) == 0 {
 		fmt.Println("You should init first!")
 		return
 	}
@@ -232,7 +231,7 @@ func (usdt *UsdtConfig) GenerateTrxTransactionFile() {
 	}
 }
 func (usdt *UsdtConfig) GenerateTrc10TransactionFile() {
-	if usdt.airdropAddress == nil || len(usdt.airdropAddress) == 0 || usdt.assetName == nil || len(usdt.assetName) == 0{
+	if usdt.airdropAddress == nil || len(usdt.airdropAddress) == 0 || usdt.assetName == nil || len(usdt.assetName) == 0 {
 		fmt.Println("You should init first!")
 		return
 	}
@@ -309,12 +308,12 @@ func (usdt *UsdtConfig) RunCli() {
 			fmt.Println("Number of transactions broadcast in a batch:")
 			f = bufio.NewReader(os.Stdin)
 			batchNumber, err := f.ReadString('\n')
-			if err != nil{
+			if err != nil {
 				fmt.Printf("Read string from buffer error, reasons: [%v]\n", err)
 				return
 			}
 			batch, err := strconv.ParseInt(strings.Replace(batchNumber, "\n", "", -1), 10, 32)
-			if err != nil{
+			if err != nil {
 				fmt.Printf("Convert batch to int64, reasons: [%v]\n", err)
 				return
 
@@ -346,24 +345,25 @@ func (usdt *UsdtConfig) RunCli() {
 		}
 	}
 }
+
 type Conf struct {
-	AirdropAddress 	string `yaml:"airdrop_address"`
-	PrivateKey 		string `yaml:"private_key"`
-	Fullnode 		string  `yaml:"fullnode"`
-	Solditynode 	string `yaml:"soliditynode"`
-	Batch 			uint32 `yaml:"batch"`
-	Airdrops 		map[string]AirDropConf `yaml:"airdrops"`
+	AirdropAddress string                 `yaml:"airdrop_address"`
+	PrivateKey     string                 `yaml:"private_key"`
+	Fullnode       string                 `yaml:"fullnode"`
+	Solditynode    string                 `yaml:"soliditynode"`
+	Batch          uint32                 `yaml:"batch"`
+	Airdrops       map[string]AirDropConf `yaml:"airdrops"`
 }
 type AirDropConf struct {
-	Type 			string `ymal:"type"`
-	Decimals 		uint32 `yaml:"decimals"`
+	Type            string `ymal:"type"`
+	Decimals        uint32 `yaml:"decimals"`
 	AssetName       string `yaml:"assetname"`
 	ContractAddress string `yaml:"contract_address"`
-	Enable 			bool `yaml:"enable"`
-	Audit 			string `yaml:"audit"`
-	TxFile 			string `yaml:"tx_file"`
-	SignedFile 		string `yaml:"signed_file"`
-	BlacklistFile 		string `yaml:"blacklist_file"`
+	Enable          bool   `yaml:"enable"`
+	Audit           string `yaml:"audit"`
+	TxFile          string `yaml:"tx_file"`
+	SignedFile      string `yaml:"signed_file"`
+	BlacklistFile   string `yaml:"blacklist_file"`
 }
 
 func (c *Conf) GetConf(file string) *Conf {
@@ -389,10 +389,10 @@ func (c *Conf) Generate() {
 			addressByte, _ = hex.DecodeString(c.AirdropAddress)
 		}
 		auditFile := c.Airdrops[name].Audit
-		txFile :=c.Airdrops[name].TxFile
+		txFile := c.Airdrops[name].TxFile
 		blacklistFile := c.Airdrops[name].BlacklistFile
 		fmt.Println("\n\n\n-------------------------------------------------------------")
-		fmt.Printf("[%s] generating....\n", name, )
+		fmt.Printf("[%s] generating....\n", name)
 		fmt.Println("-------------------------------------------------------------")
 
 		tokenType := c.Airdrops[name].Type
@@ -423,14 +423,14 @@ func (c *Conf) Generate() {
 		}
 	}
 }
-func (c *Conf) Sign(){
+func (c *Conf) Sign() {
 	for name := range c.Airdrops {
-		if c.Airdrops[name].Enable == false{
+		if c.Airdrops[name].Enable == false {
 			continue
 		}
 
 		fmt.Println("\n\n\n-------------------------------------------------------------")
-		fmt.Printf("[%s] signing....\n" ,name, )
+		fmt.Printf("[%s] signing....\n", name)
 		fmt.Println("-------------------------------------------------------------")
 		ecdsaPK, err := eth.HexToECDSA(strings.Replace(c.PrivateKey, "\n", "", -1))
 		if err != nil {
@@ -454,7 +454,7 @@ func (c *Conf) Broadcast() {
 		txSignedFile := c.Airdrops[name].SignedFile
 
 		fmt.Println("\n\n\n-------------------------------------------------------------")
-		fmt.Printf("[%s] broadcast....\n", name, )
+		fmt.Printf("[%s] broadcast....\n", name)
 		fmt.Println("-------------------------------------------------------------")
 		err := broadcast.TransactionBroadcast(batch, txSignedFile)
 		if err != nil {
@@ -471,6 +471,7 @@ func (c *Conf) Check() {
 		}
 
 		txSignedFile := c.Airdrops[name].SignedFile
+		log.Logger().Info(fmt.Sprintf("Check [%s], file: [%s]......", name, txSignedFile))
 		err := check.TransactionCheck(txSignedFile)
 		if err != nil {
 			fmt.Printf("Transactions check error, reasons: [%v]\n", err)
@@ -488,23 +489,23 @@ func main() {
 	interactive := flag.Bool("interactive", false, "Start the interactive command line, the default is non-interactive.")
 	flag.Parse()
 
-	if *interactive == true{
+	if *interactive == true {
 		var c UsdtConfig
 		c.RunCli()
 		return
 	}
 	funcCtr := 0
-	if *generate  == true{
+	if *generate == true {
 		funcCtr += 1
-	} else if *sign == true{
+	} else if *sign == true {
 		funcCtr += 1
-	}else if *broadcast == true{
+	} else if *broadcast == true {
 		funcCtr += 1
-	}else if *check == true{
+	} else if *check == true {
 		funcCtr += 1
 	}
-	if funcCtr == 0 || funcCtr > 1{
-		fmt.Println("Please select a function:\n"+
+	if funcCtr == 0 || funcCtr > 1 {
+		fmt.Println("Please select a function:\n" +
 			"\t--generate: Generate transaction files.\n" +
 			"\t--sign: Sign transaction files.\n" +
 			"\t--broadcast: Broadcast signed transaction files.\n")
@@ -516,16 +517,15 @@ func main() {
 		configPath = *config
 	}
 
-
 	info := Conf{}
 	conf := info.GetConf(configPath)
-	if *generate == true{
+	if *generate == true {
 		conf.Generate()
-	}else if *sign == true{
+	} else if *sign == true {
 		conf.Sign()
-	}else if *broadcast == true{
+	} else if *broadcast == true {
 		conf.Broadcast()
-	}else if *check == true{
+	} else if *check == true {
 		conf.Check()
 	}
 

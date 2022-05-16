@@ -27,7 +27,8 @@ func init() {
 
 // Structure method to get gRPC connection to tron server.
 func TronConnection() (*grpc.ClientConn, error) {
-	conn, err := grpc.Dial("grpc.trongrid.io:50051", grpc.WithInsecure())
+	//conn, err := grpc.Dial("grpc.trongrid.io:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("34.220.77.106:50051", grpc.WithInsecure())
 	//conn, err := grpc.Dial("grpc.shasta.trongrid.io:50051", grpc.WithInsecure())
 	if err != nil {
 		return nil, err
@@ -37,7 +38,7 @@ func TronConnection() (*grpc.ClientConn, error) {
 
 // Structure method to get gRPC connection to tron server.
 func TronSolidityConnection() (*grpc.ClientConn, error) {
-	conn, err := grpc.Dial("grpc.trongrid.io:50052", grpc.WithInsecure())
+	conn, err := grpc.Dial("34.220.77.106:50061", grpc.WithInsecure())
 	//conn, err := grpc.Dial("grpc.shasta.trongrid.io:50052", grpc.WithInsecure())
 	if err != nil {
 		return nil, err
